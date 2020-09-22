@@ -9,10 +9,18 @@ struct Node {
     T val;
     Node *next;
     Node *prior;
-    int freq;//频率. 每次插入结点后据此排序.
+    int freq{};//频率. 每次插入结点后据此排序.
 
-    explicit Node(T x) : val(x), next(nullptr) {}
+    explicit Node(T x) : val(x), next(nullptr), prior(nullptr) {}
 
+    bool operator<(const Node &rhs) const {
+        return freq < rhs.freq;
+    }
+
+    void operator=(const Node &rhs) const {
+        freq = rhs.freq;
+        val = rhs.val;
+    }
 };
 
 template<typename T>
@@ -26,6 +34,8 @@ public:
 
     void insert(T val, const int &pos);
 
+    void push_end(const T &val);
+
     void remove(T val);
 
     int getLength();
@@ -33,6 +43,8 @@ public:
     int find(T val);
 
     void print();
+
+    void sort();
 
     ~Link();
 };
@@ -55,7 +67,7 @@ inline void Link<T>::insert(T val, const int &pos) {
     if (pos == 0) {
         node->next = temp;
         head = node;
-        length++;
+        ++length;
         return;
     }
     //将temp置于要插入的节点之前.
@@ -76,13 +88,13 @@ inline void Link<T>::insert(T val, const int &pos) {
 #if (1)
     //双向链表操作.
     node->next = temp->next;
-    temp->next->prior = node;
-
+    if(pos!=length)
+        temp->next->prior = node;
     temp->next = node;
-    node->next = temp;
+    node->prior = temp;
 #endif
-
     ++length;
+    sort();
 }
 
 template<typename T>
@@ -126,7 +138,7 @@ inline int Link<T>::find(T val) {
     int index{};
     while (temp != nullptr) {
         if (temp->val == val) {
-            temp->freq+1;
+            temp->freq=temp->freq+1 ;
             return index;
         }
         temp = temp->next;
@@ -141,7 +153,7 @@ inline void Link<T>::print() {
         cout << "List is empty" << endl;
         return;
     }
-    Node<T> *temp{head};
+    auto temp{head};
     while (temp != nullptr) {
         cout << temp->val << endl;
         temp = temp->next;
@@ -157,4 +169,24 @@ inline Link<T>::~Link() {
         head = head->next;
         delete temp;
     }
+}
+
+//冒泡排序, 直接交换数据.
+template<typename T>
+void Link<T>::sort() {
+    if(length==1)return;
+    for (auto p = head; p->next != nullptr; p = p->next) {
+        for (auto q = p->next; q != nullptr; q = q->next) {
+            if (*q < *p) {
+                auto temp{p->freq};
+                q->freq = p->freq;
+                p->freq = temp;
+            }
+        }
+    }
+}
+
+template<typename T>
+void Link<T>::push_end(const T &val)  {
+    insert(val,length);
 }
