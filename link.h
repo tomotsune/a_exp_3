@@ -1,3 +1,10 @@
+//
+//1. 双向链表模板.
+//2. 根据范围频率进行排序.
+//3. 冒泡排序, 只交换数据.
+//
+//Created by 胡海彬(tomo) on 2020/9/22.
+//
 #pragma once
 
 #include<iostream>
@@ -11,13 +18,18 @@ struct Node {
     Node *prior;
     int freq{};//频率. 每次插入结点后据此排序.
 
-    explicit Node(T x) : val(x), next(nullptr), prior(nullptr) {}
+    explicit Node(const T &x) : val(x), next(nullptr), prior(nullptr) {}
+
+    Node(const Node &rhs) {
+        freq = rhs.freq;
+        val = rhs.val;
+    }
 
     bool operator<(const Node &rhs) const {
         return freq < rhs.freq;
     }
 
-    void operator=(const Node &rhs) const {
+    void operator=(const Node &rhs) {
         freq = rhs.freq;
         val = rhs.val;
     }
@@ -45,6 +57,18 @@ public:
     void print();
 
     void sort();
+
+    friend ostream &operator<<(ostream &os, const Link &link) {
+        if (link.head == nullptr) {
+            os << "List is empty" << endl;
+        }
+        auto temp{link.head};
+        while (temp != nullptr) {
+            os << temp->val << " ";
+            temp = temp->next;
+        }
+        return os;
+    }
 
     ~Link();
 };
@@ -88,13 +112,12 @@ inline void Link<T>::insert(T val, const int &pos) {
 #if (1)
     //双向链表操作.
     node->next = temp->next;
-    if(pos!=length)
+    if (pos != length)
         temp->next->prior = node;
     temp->next = node;
     node->prior = temp;
 #endif
     ++length;
-    sort();
 }
 
 template<typename T>
@@ -138,7 +161,7 @@ inline int Link<T>::find(T val) {
     int index{};
     while (temp != nullptr) {
         if (temp->val == val) {
-            temp->freq=temp->freq+1 ;
+            temp->freq = temp->freq + 1;
             return index;
         }
         temp = temp->next;
@@ -155,7 +178,7 @@ inline void Link<T>::print() {
     }
     auto temp{head};
     while (temp != nullptr) {
-        cout << temp->val << endl;
+        cout << temp->val << " ";
         temp = temp->next;
     }
     cout << endl;
@@ -174,19 +197,19 @@ inline Link<T>::~Link() {
 //冒泡排序, 直接交换数据.
 template<typename T>
 void Link<T>::sort() {
-    if(length==1)return;
+    if (length == 1)return;
     for (auto p = head; p->next != nullptr; p = p->next) {
         for (auto q = p->next; q != nullptr; q = q->next) {
             if (*p < *q) {
-                auto temp{p->val};
-                q->val = p->val;
-                p->val = temp;
+                auto temp{*q};
+                *q = *p;
+                *p = temp;
             }
         }
     }
 }
 
 template<typename T>
-void Link<T>::push_end(const T &val)  {
-    insert(val,length);
+void Link<T>::push_end(const T &val) {
+    insert(val, length);
 }
