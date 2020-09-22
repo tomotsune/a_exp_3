@@ -177,10 +177,10 @@ void Link<T>::sort() {
     if(length==1)return;
     for (auto p = head; p->next != nullptr; p = p->next) {
         for (auto q = p->next; q != nullptr; q = q->next) {
-            if (*q < *p) {
-                auto temp{p->freq};
-                q->freq = p->freq;
-                p->freq = temp;
+            if (*p < *q) {
+                auto temp{p->val};
+                q->val = p->val;
+                p->val = temp;
             }
         }
     }
