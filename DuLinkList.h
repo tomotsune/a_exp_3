@@ -12,37 +12,36 @@
 using namespace std;
 
 template<typename T>
-struct Node {
-    T val;
-    Node *next;
-    Node *prior;
-    int freq{};//频率. 每次插入结点后据此排序.
-
-    explicit Node(const T &x) : val(x), next(nullptr), prior(nullptr) {}
-
-    Node(const Node &rhs) {
-        freq = rhs.freq;
-        val = rhs.val;
-    }
-
-    bool operator<(const Node &rhs) const {
-        return freq < rhs.freq;
-    }
-
-    void operator=(const Node &rhs) {
-        freq = rhs.freq;
-        val = rhs.val;
-    }
-};
-
-template<typename T>
-class Link {
+class DuLinkList {
 private:
-    Node<T> *head;
+    struct DuNode {
+        T val;
+        DuNode *next;
+        DuNode *prior;
+        int freq{};//频率. 每次插入结点后据此排序.
+
+        explicit DuNode(const T &x) : val(x), next(nullptr), prior(nullptr) {}
+
+        DuNode(const DuNode &rhs) {
+            freq = rhs.freq;
+            val = rhs.val;
+        }
+
+        bool operator<(const DuNode &rhs) const {
+            return freq < rhs.freq;
+        }
+
+        void operator=(const DuNode &rhs) {
+            freq = rhs.freq;
+            val = rhs.val;
+        }
+    };
+
+    DuNode *head;
     int length{};
 
 public:
-    Link();
+    DuLinkList();
 
     void insert(T val, const int &pos);
 
@@ -58,11 +57,11 @@ public:
 
     void sort();
 
-    friend ostream &operator<<(ostream &os, const Link &link) {
-        if (link.head == nullptr) {
+    friend ostream &operator<<(ostream &os, const DuLinkList &duLinkList) {
+        if (duLinkList.head == nullptr) {
             os << "List is empty" << endl;
         }
-        auto temp{link.head};
+        auto temp{duLinkList.head};
         while (temp != nullptr) {
             os << temp->val << " ";
             temp = temp->next;
@@ -70,27 +69,27 @@ public:
         return os;
     }
 
-    ~Link();
+    ~DuLinkList();
 };
 
 template<typename T>
-inline Link<T>::Link() {
+inline DuLinkList<T>::DuLinkList() {
     head = nullptr;
     length == 0;
 }
 
 template<typename T>
-inline void Link<T>::insert(T val, const int &pos) {
+inline void DuLinkList<T>::insert(T val, const int &pos) {
     if (pos < 0) {
         cout << "pos must be greater than zero" << endl;
         return;
     }
     int index{1};//walking stick of temp
-    Node<T> *temp{head};
-    auto *node = new Node<T>{val};
+    auto *temp{head};
+    auto *duNode = new DuNode{val};
     if (pos == 0) {
-        node->next = temp;
-        head = node;
+        duNode->next = temp;
+        head = duNode;
         ++length;
         return;
     }
@@ -106,22 +105,22 @@ inline void Link<T>::insert(T val, const int &pos) {
     //此时temp的位置在pos之前, 以下步骤根据链表类型有所差异
 #if (0)
     //单链表操作.
-    node->next = temp->next;
-    temp->next = node;
+    duNode->next = temp->next;
+    temp->next = duNode;
 #endif
 #if (1)
     //双向链表操作.
-    node->next = temp->next;
+    duNode->next = temp->next;
     if (pos != length)
-        temp->next->prior = node;
-    temp->next = node;
-    node->prior = temp;
+        temp->next->prior = duNode;
+    temp->next = duNode;
+    duNode->prior = temp;
 #endif
     ++length;
 }
 
 template<typename T>
-inline void Link<T>::remove(T val) {
+inline void DuLinkList<T>::remove(T val) {
     int pos = find(val);
     if (-1 == pos) {
         cout << "delete failed";
@@ -150,14 +149,14 @@ inline void Link<T>::remove(T val) {
 }
 
 template<typename T>
-inline int Link<T>::getLength() {
+inline int DuLinkList<T>::getLength() {
     return length;
 }
 
 
 template<typename T>
-inline int Link<T>::find(T val) {
-    Node<T> *temp = head;
+inline int DuLinkList<T>::find(T val) {
+    auto temp{head};
     int index{};
     while (temp != nullptr) {
         if (temp->val == val) {
@@ -171,7 +170,7 @@ inline int Link<T>::find(T val) {
 }
 
 template<typename T>
-inline void Link<T>::print() {
+inline void DuLinkList<T>::print() {
     if (head == nullptr) {
         cout << "List is empty" << endl;
         return;
@@ -185,8 +184,8 @@ inline void Link<T>::print() {
 }
 
 template<typename T>
-inline Link<T>::~Link() {
-    Node<T> *temp;
+inline DuLinkList<T>::~DuLinkList() {
+    DuNode *temp;
     for (int i = 0; i < length; i++) {
         temp = head;
         head = head->next;
@@ -196,7 +195,7 @@ inline Link<T>::~Link() {
 
 //冒泡排序, 直接交换数据.
 template<typename T>
-void Link<T>::sort() {
+void DuLinkList<T>::sort() {
     if (length == 1)return;
     for (auto p = head; p->next != nullptr; p = p->next) {
         for (auto q = p->next; q != nullptr; q = q->next) {
@@ -210,6 +209,6 @@ void Link<T>::sort() {
 }
 
 template<typename T>
-void Link<T>::push_end(const T &val) {
+void DuLinkList<T>::push_end(const T &val) {
     insert(val, length);
 }

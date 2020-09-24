@@ -4,9 +4,10 @@
 //Created by 胡海彬(tomo) on 2020/9/22.
 //
 #include <iostream>
-#include "link.h"
+#include "DuLinkList.h"
+#include "SgLinkList.h"
 int main() {
-    Link<int> DL1;
+    DuLinkList<int> DL1;
     DL1.push_end(1);
     DL1.push_end(2);
     DL1.push_end(3);
@@ -22,7 +23,6 @@ int main() {
     DL1.find(3);
     DL1.sort();
     cout<<"After accessing '2' twice, '3' thrice: "<<DL1<<endl;
-
 
     return 0;
 }
