@@ -17,15 +17,16 @@ int main() {
 }
 void question_1(){
     CirLinkList<int> list;
-    list.insert(1,0);
-    list.insert(2,1);
-    list.insert(3,2);
+    list.push_end(1);
+    list.push_end(2);
+    list.push_end(3);
     auto s = list.getHead()->next;
 
     cout<<"Q2: remove the previous node of S from circle-list-link"<<endl;
     cout<<"Original list: ";list.print();
+    list.print();
 
-    list.removeByPos(list.find(s->val));
+    list.removeByPos(list.find(s->val)-1);
     cout<<"After removing: ";list.print();
 }
 void question_3(){
