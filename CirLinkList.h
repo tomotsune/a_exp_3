@@ -17,10 +17,14 @@ private:
 public:
     CirLinkList();
     void insert(T val, const int& pos);
-    void remove(T val);
+    void remove(const T& val);
+    void removeByPos(const int& pos);
     int getLength();
     int find(T val);
     void print();
+
+    CirNode *getHead() const;
+
     ~CirLinkList();
 };
 
@@ -63,27 +67,9 @@ inline void CirLinkList<T>::insert(T val, const int& pos)
 }
 
 template<typename T>
-inline void CirLinkList<T>::remove(T val)
+inline void CirLinkList<T>::remove(const T& val)
 {
-    int pos = find(val);
-    if (-1 == pos) {
-        cout << "delete failed";
-        return;
-    }
-    if (0==pos) {
-        head = head->next;
-        --length;
-        return;
-    }
-    int index{ 1 };
-    auto temp{head};
-    while (index < pos) {
-        temp = temp->next;
-    }
-    auto removeNode{ temp->next };
-    temp->next == temp->next->next;
-    delete removeNode;
-    --length;
+    removeByPos(find(val));
 }
 
 template<typename T>
@@ -136,4 +122,31 @@ inline CirLinkList<T>::~CirLinkList()
         head = head->next;
         delete temp;
     }
+}
+
+template<typename T>
+typename CirLinkList<T>::CirNode *CirLinkList<T>::getHead() const {
+    return head;
+}
+
+template<typename T>
+void CirLinkList<T>::removeByPos(const int &pos) {
+    if (pos>length) {
+        cout << "delete failed";
+        return;
+    }
+    if (0==pos) {
+        head = head->next;
+        --length;
+        return;
+    }
+    int index{ 1 };
+    auto temp{head};
+    while (index < pos) {
+        temp = temp->next;
+    }
+    auto removeNode{ temp->next };
+    temp->next == temp->next->next;
+    delete removeNode;
+    --length;
 }
