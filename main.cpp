@@ -8,15 +8,16 @@
 #include "SgLinkList.h"
 void question_3();
 void question_1();
+void question_2();
 int main() {
    // question_3();
-    question_1();
+    question_2();
 
 
     return 0;
 }
 void question_1(){
-    CirLinkList<int> list;
+    CirLinkList<int> list(nullptr);
     list.push_end(1);
     list.push_end(2);
     list.push_end(3);
@@ -28,6 +29,16 @@ void question_1(){
 
     list.removeByPos(list.find(s->val)-1);
     cout<<"After removing: ";list.print();
+}
+void question_2(){
+    SgLinkList<char> list;
+    list.insert('1',0);
+    list.insert('a',1);
+    list.insert('b',2);
+    list.insert('&',3);
+    list.spite();
+
+
 }
 void question_3(){
         DuLinkList<int> DL1;

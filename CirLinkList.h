@@ -1,52 +1,50 @@
 #pragma once
 
 #include<iostream>
+#include "Node.h"
 
 using namespace std;
 
 template<typename T>
 class CirLinkList {
 private:
-    struct CirNode {
-        T val;
-        CirNode *next;
 
-        explicit CirNode(T x) : val(x), next(nullptr) {}
-    };
-
-    CirNode *head;
-    CirNode *tail;
+    Node<T> *head;
+    Node<T> *tail;
     int length{};
-    CirNode* getNode(const int& pos);
-public:
 
+    Node<T> *getNode(const int &pos);
+
+public:
     CirLinkList();
+
+    CirLinkList(CirLinkList<char> *pList);
 
     void insert(const T &val, const int &pos);
 
     void push_end(const T &val);
 
+    void push_end( Node<T> *node);
 
     void remove(const T &val);
+
 
     void removeByPos(const int &pos);
 
     int getLength();
 
 
-    int find(const T& val)const;
+    int find(const T &val) const;
 
     void print();
 
-    const CirNode  *getHead() const;
-
-
+    const Node<T> *getHead() const;
 
     ~CirLinkList();
 };
 
 template<typename T>
-inline CirLinkList<T>::CirLinkList() {
+inline CirLinkList<T>::CirLinkList(CirLinkList<char> *pList) {
     head = nullptr;
     length == 0;
 }
@@ -61,16 +59,16 @@ inline void CirLinkList<T>::insert(const T &val, const int &pos) {
         push_end(val);
     else if (pos == 0)      //在头部插入元素
     {
-        auto node = new CirNode(val);
+        auto node = new Node<T>(val);
         node->next = head;
         head = node;
         tail->next = head;
     } else {
         //返回插入位置前面一个的位置指针
-        auto priorNode=getNode(pos-1);
-        auto node=new CirNode(val);
-        node->next=priorNode.next;
-        priorNode->next=node;
+        auto priorNode = getNode(pos - 1);
+        auto node = new Node<T>(val);
+        node->next = priorNode.next;
+        priorNode->next = node;
     }
     ++length;
 }
@@ -87,10 +85,10 @@ inline int CirLinkList<T>::getLength() {
 
 
 template<typename T>
-inline int CirLinkList<T>::find(const T& val)const {
+inline int CirLinkList<T>::find(const T &val) const {
     auto temp{head};
     int index{};
-    while (index<length) {
+    while (index < length) {
         if (temp->val == val) {
             return index;
         }
@@ -108,15 +106,15 @@ inline void CirLinkList<T>::print() {
     }
     auto temp{head};
     for (int i = 0; i < length; ++i) {
-        cout<<temp->val<<" ";
-        temp=temp->next;
+        cout << temp->val << " ";
+        temp = temp->next;
     }
     cout << endl;
 }
 
 template<typename T>
 inline CirLinkList<T>::~CirLinkList() {
-    CirNode *temp;
+    Node<T> *temp;
     for (int i = 0; i < length; i++) {
         temp = head;
         head = head->next;
@@ -125,26 +123,26 @@ inline CirLinkList<T>::~CirLinkList() {
 }
 
 template<typename T>
-const typename CirLinkList<T>::CirNode *CirLinkList<T>::getHead() const {
+const Node<T> *CirLinkList<T>::getHead() const {
     return head;
 }
 
 template<typename T>
 void CirLinkList<T>::removeByPos(const int &pos) {
-    if (pos > length-1) {
+    if (pos > length - 1) {
         cout << "delete failed";
         return;
     }
 
     if (0 == pos) {
-        tail->next->next=head->next;
+        tail->next->next = head->next;
         auto temp{head};
-        head=head->next;
+        head = head->next;
         delete temp;
         --length;
         return;
     }
-    auto priorNode = getNode(pos-1);
+    auto priorNode = getNode(pos - 1);
     auto removeNode{priorNode->next};
     priorNode->next = priorNode->next->next;
     delete removeNode;
@@ -153,31 +151,42 @@ void CirLinkList<T>::removeByPos(const int &pos) {
 
 template<typename T>
 void CirLinkList<T>::push_end(const T &val) {
-    {
-        auto pNode = new CirNode(val);
-        if (head == nullptr)   //链表为空时
-        {
-            head = pNode;
-            tail = pNode;
-            tail->next = head;
-        } else {
-            tail->next = pNode;
-            tail = pNode;
-            tail->next = head;
-        }
-        ++length;
-    }
+
+    auto pNode = new Node<T>(val);
+    push_end(pNode);
+
 }
 
 template<typename T>
-typename CirLinkList<T>::CirNode *CirLinkList<T>::getNode(const int &pos) {
+Node<T> *CirLinkList<T>::getNode(const int &pos) {
     auto temp{head};
     int index{};
-    while (index!=pos) {
+    while (index != pos) {
         temp = temp->next;
         ++index;
     }
     return temp;
+}
+
+
+template<typename T>
+void CirLinkList<T>::push_end( Node<T> *node) {
+    if (head == nullptr)   //链表为空时
+    {
+        head = node;
+        tail = node;
+        tail->next = head;
+    } else {
+        tail->next = node;
+        tail = node;
+        tail->next = head;
+    }
+    ++length;
+}
+
+template<typename T>
+CirLinkList<T>::CirLinkList():head{nullptr},tail(nullptr),length(0){
+
 }
 
 
