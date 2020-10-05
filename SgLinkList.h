@@ -185,9 +185,9 @@ void SgLinkList<T>::spite() {
         temp = next;
 
     }
-    alpha.print();
-    digit.print();
-    punct.print();
+    cout<<"alpha: ";alpha.print();
+    cout<<"digit: ";digit.print();
+    cout<<"punct: ";punct.print();
 }
 
 template<typename T>

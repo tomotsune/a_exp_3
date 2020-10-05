@@ -10,8 +10,9 @@ void question_3();
 void question_1();
 void question_2();
 int main() {
-   // question_3();
+   // question_1();
     question_2();
+   // question_3();
 
 
     return 0;
@@ -23,7 +24,7 @@ void question_1(){
     list.push_end(3);
     auto s = list.getHead()->next;
 
-    cout<<"Q2: remove the previous node of S from circle-list-link"<<endl;
+    cout<<"Q1: remove the previous node of S from circle-list-link"<<endl;
     cout<<"Original list: ";list.print();
     list.print();
 
@@ -36,9 +37,9 @@ void question_2(){
     list.insert('a',1);
     list.insert('b',2);
     list.insert('&',3);
+
+    cout<<"Q2: I'm going to shard by type of char"<<endl;
     list.spite();
-
-
 }
 void question_3(){
         DuLinkList<int> DL1;
@@ -48,6 +49,7 @@ void question_3(){
         DL1.push_end(4);
         DL1.push_end(5);
         DL1.push_end(6);
+        cout<<"Q3: sorting by freq"<<endl;
         cout<<"original: "<<DL1<<endl;
 
         DL1.find(2);
