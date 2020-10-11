@@ -15,8 +15,8 @@ void question_2();
 
 int main() {
     // question_1();
-    question_2();
-    // question_3();
+    //question_2();
+     question_3();
 
 
     return 0;
@@ -36,10 +36,10 @@ void question_1() {
     cout << "Q1: remove the previous node of S from circle-list-link" << endl;
     cout << "Original list: ";
     list.print();
-    list.print();
 
     //删除 S 的前驱结点.
-    list.removeByPos(list.find(s->val) - 1);
+    /*list.removeByPos(list.find(s->val) - 1);*/
+    list.removePrior(s);
     cout << "After removing: ";
     list.print();
 }
@@ -80,6 +80,6 @@ void question_3() {
     DL1.find(3);
 
     //根据频率排序
-    DL1.sort();
+  //  DL1.sort();
     cout << "After accessing '2' twice, '3' thrice: " << DL1 << endl;
 };

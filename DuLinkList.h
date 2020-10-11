@@ -69,6 +69,9 @@ public:
         return os;
     }
 
+    //与前一个结点交换位置.
+    void swap(DuNode *n);
+
     ~DuLinkList();
 };
 
@@ -161,6 +164,9 @@ inline int DuLinkList<T>::find(T val) {
     while (temp != nullptr) {
         if (temp->val == val) {
             temp->freq = temp->freq + 1;
+            while (temp->prior!= nullptr&&temp->freq > temp->prior->freq) {
+                swap(temp);
+            }
             return index;
         }
         temp = temp->next;
@@ -212,3 +218,25 @@ template<typename T>
 void DuLinkList<T>::push_end(const T &val) {
     insert(val, length);
 }
+
+template<typename T>
+void DuLinkList<T>::swap(DuLinkList::DuNode *n) {
+    /*  auto temp_1{n->prior->prior};
+       auto temp_2{n->next};
+       n->prior->prior = n;
+       n->next = n->prior;
+
+       if (temp_1 != nullptr) {
+           temp_1->next = n;
+           n->prior = temp_1;
+       }
+
+       n->next->next = temp_2;
+       temp_2->prior = n->next;*/
+    if(n== nullptr&&n->prior== nullptr)return;
+    auto temp{*(n->prior)};
+    *(n->prior) = *n;
+    *n = temp;
+
+}
+

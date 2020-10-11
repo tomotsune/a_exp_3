@@ -7,7 +7,7 @@ using namespace std;
 
 template<typename T>
 class CirLinkList {
-private:
+protected:
 
     Node<T> *head;
     Node<T> *tail;
@@ -38,9 +38,11 @@ public:
 
     void print();
 
-    const Node<T> *getHead() const;
+    Node<T> *getHead();
 
     ~CirLinkList();
+
+    void removePrior(Node<T>* n);
 };
 
 template<typename T>
@@ -123,7 +125,7 @@ inline CirLinkList<T>::~CirLinkList() {
 }
 
 template<typename T>
-const Node<T> *CirLinkList<T>::getHead() const {
+Node<T> *CirLinkList<T>::getHead()  {
     return head;
 }
 
@@ -187,6 +189,19 @@ void CirLinkList<T>::push_end( Node<T> *node) {
 template<typename T>
 CirLinkList<T>::CirLinkList():head{nullptr},tail(nullptr),length(0){
 
+}
+
+template<typename T>
+void CirLinkList<T>::removePrior(Node<T>* n) {
+    auto temp{n};
+    while(temp->next->next!=n){
+        temp=temp->next;
+
+    }
+    auto removeNode{temp->next};
+    head=temp->next=n;
+    delete removeNode;
+    --length;
 }
 
 
